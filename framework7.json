@@ -1,0 +1,20 @@
+{
+  "cwd": "/Users/ivanilushin/WebstormProjects/calendar",
+  "type": [
+    "web",
+    "pwa"
+  ],
+  "name": "Calendar of life",
+  "framework": "vue",
+  "template": "tabs",
+  "bundler": "vite",
+  "cssPreProcessor": "stylus",
+  "theming": {
+    "customColor": false,
+    "color": "#007aff",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false
+  },
+  "customBuild": false
+}
