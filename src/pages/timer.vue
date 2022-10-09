@@ -38,7 +38,7 @@ f7-page(name='calendar')
 					x: undefined,
 					y: undefined
 				}
-				const all_lines = 20;
+				const all_lines = 21;
 				const widthLine = Math.floor(canvas.width / all_lines);
 
 				addEventListener('mousemove', event => {
@@ -48,20 +48,20 @@ f7-page(name='calendar')
 
 				// Objects
 				class Line {
-					constructor(x, date) {
-						this.x = x
+					x = 0;
+					constructor(date) {
 						this.date = date
 					}
 					draw() {
-							c.beginPath()
-							let yStart = 220;
-							const yEnd = 300;
+						c.beginPath()
+						let yStart = 220;
+						const yEnd = 300;
 
-							const second = new Date(this.date).getSeconds();
-							const minutes = new Date(this.date).getMinutes();
-							const hours = new Date(this.date).getHours();
+						const second = new Date(this.date).getSeconds();
+						const minutes = new Date(this.date).getMinutes();
+						const hours = new Date(this.date).getHours();
 
-							if(second === 0) {
+						if(second === 0) {
 								yStart = 200;
 								if(minutes === 0) {
 									yStart = 180;
@@ -72,41 +72,54 @@ f7-page(name='calendar')
 
 							}
 
-							c.moveTo(this.x, yStart)
-							c.lineTo(this.x, yEnd)
-
-							if(this.x <= center){
+						const pxDiff = widthLine / 1000;
+						const timeDiff = Date.now() - this.date;
+						this.x = center - (timeDiff * pxDiff);
+							if(timeDiff >= 0) {
+								// past
 								c.strokeStyle = 'gray'
 								c.lineWidth = 1
+								c.fillStyle = 'gray'
+
 							}
-							else {
+							if(timeDiff < 0) {
+								// future
 								c.strokeStyle = 'black'
 								c.lineWidth = 2
+								c.fillStyle = '#000';
+
 							}
 
+							c.moveTo(this.x, yStart)
+							c.lineTo(this.x, yEnd)
 							c.stroke()
 							c.closePath()
 
-
-							if(this.x < center){
-								c.fillStyle = 'gray'
-							}
-							else {
-								c.fillStyle = "#000";
-							}
-
-							c.font = "8pt Arial";
+							c.font = '8pt Arial';
 							const textWidth = c.measureText(second).width;
 
 							c.fillText(second , this.x - (textWidth / 2), 314);
 
 							// tooltip for second
-							if(second === 22) {
+							if(second === 2) {
+								const opacity = () => {
+									const rightDiff = canvas.width - this.x;
+									if(rightDiff < 100) {
+										return rightDiff / 100;
+									}
+
+									const leftDiff = (0 - this.x)*-1;
+									if(leftDiff < 100) {
+										return leftDiff / 100;
+									}
+
+									return 1;
+								}
 								c.beginPath()
-								c.strokeStyle = 'black'
+								c.strokeStyle = `rgba(0,0,0,${ opacity() })`;
 								c.lineWidth = 1
 								let start = { x: center,   y: 80  };
-								let cp1 =   { x: center,   y: 150  };
+								let cp1 =   { x: this.x,   y: 150  };
 								let cp2 =   { x: this.x,   y: 150  };
 								let end =   { x: this.x,   y: 210 };
 
@@ -120,17 +133,7 @@ f7-page(name='calendar')
 									' Она уникальная раз в жизни \n Её координаты ' + format(this.date, 'y MM dd HH:mm:ss');
 								c.font = '10pt Arial';
 								c.lineWidth = 1;
-								const opacity = () => {
-									// 0 to 1 throw 0.2
-									const diff = canvas.width - this.x;
-									if(diff < 100) {
-										return diff / 100;
-									}
-									return 1;
-									// if(this.x < canvas.width && this.x < canvas.width) return 1;
-									// canvas.width - this.x ? 1 : 0;
-									// this.x < 22 ? 1 : 0.5
-								}
+
 								c.fillStyle = `rgba(0,0,0,${ opacity() })`;
 								const textWidth = c.measureText(text).width;
 
@@ -146,31 +149,34 @@ f7-page(name='calendar')
 							}
 						}
 					update() {
-						this.x -= 1;
 						this.draw()
 
 						if(this.x < -widthLine) {
 							lines.shift();
 							const last_elem = lines[lines.length - 1];
-							lines.push(new Line(last_elem.x + widthLine, last_elem.date + 1000));
+							lines.push(new Line(last_elem.date + 1000));
 						}
 					}
 				}
 				class Clock {
+					now = new Date;
 					draw() {
-						const halfCanvasWidth = canvas.width / 2;
 						c.beginPath()
 						c.fillStyle = '#000';
 						c.font = '12pt Arial';
-						const textString = format(new Date(), 'HH:mm:ss');
+						const textString = format(this.now, 'HH:mm:ss');
 						const textWidth = c.measureText(textString).width;
 						c.fillText(textString, center - (textWidth / 2), 370);
 
-						c.rect((halfCanvasWidth - textWidth/2) - 10, 160, textWidth + 20, 230)
+						c.rect((center - textWidth/2) - 10, 160, textWidth + 20, 230)
 						c.strokeStyle = 'black'
 						c.lineWidth = 1
 						c.stroke()
 						c.closePath()
+					}
+					update() {
+						this.now = new Date;
+						this.draw();
 					}
 				}
 
@@ -182,18 +188,15 @@ f7-page(name='calendar')
 					lines = [];
 					const date = Date.now();
 
-					for (let i = 0; i <= all_lines / 2; i++) {
+					for (let i = 0; i <= all_lines / 2 + 1; i++) {
 						if(i === 0) {
-							lines.push(new Line(center, date))
+							lines.push(new Line(date))
 						}
 						else {
-							const next_x = center + i * widthLine;
-							const prev_x = center - i * widthLine;
-
 							const next_second = date + i*1000;
 							const prev_second = date - i*1000;
-							lines.push(new Line(next_x, next_second))
-							lines.push(new Line(prev_x, prev_second))
+							lines.push(new Line(next_second))
+							lines.push(new Line(prev_second))
 						}
 					}
 					lines.sort((a,b) => {
@@ -206,13 +209,10 @@ f7-page(name='calendar')
 				// Animation Loop
 				function animate() {
 					c.clearRect(0, 0, canvas.width, canvas.height) // Erase whole canvas
-					c.fillStyle = '#f2f4f6';
-					c.fillRect(0, 0, canvas.width, canvas.height);
+					clock.update();
 					lines.forEach(line => {
 						line.update()
 					})
-
-					clock.draw();
 				}
 
 
@@ -236,5 +236,6 @@ f7-page(name='calendar')
 #canvas {
 	width: 100%;
 	height: 100%;
+	background: #f2f4f6;
 }
 </style>
