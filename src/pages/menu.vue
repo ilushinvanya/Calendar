@@ -20,6 +20,12 @@ f7-page
 			link="/calendar/"
 			panel-close="left"
 		)
+		f7-list-item(
+			title="Мгновении"
+			view=".view-main"
+			link="/timer/"
+			panel-close="left"
+		)
 </template>
 <script>
 import { computed } from 'vue';

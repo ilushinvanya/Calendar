@@ -14,6 +14,8 @@ f7-page(name='calendar')
 		canvas(id="canvas")
 </template>
 <script>
+	import { onMounted } from 'vue';
+	import format from 'date-fns/format';
 	// import format from 'date-fns/format'
 	// import eachWeekOfInterval from 'date-fns/eachWeekOfInterval'
 	// import eachMonthOfInterval from 'date-fns/eachMonthOfInterval'
@@ -23,169 +25,208 @@ f7-page(name='calendar')
 	// import isWithinInterval from 'date-fns/isWithinInterval'
 	// import parse from 'date-fns/parse'
 	// import endOfWeek from 'date-fns/endOfWeek'
-	// import { useStore } from 'framework7-vue';
+	// import { mount } from 'framework7-vue';
 	export default {
 		setup() {
-			const canvas = document.querySelector('canvas')
-			const c = canvas.getContext('2d')
-			canvas.width = window.innerWidth
-			canvas.height = window.innerHeight
-			const center = canvas.width / 2;
-			const mouse = {
-				x: undefined,
-				y: undefined
-			}
-
-			// Event Listeners
-			addEventListener('mousemove', event => {
-				mouse.x = event.clientX
-				mouse.y = event.clientY
-			})
-			addEventListener('resize', () => {
-				canvas.width = innerWidth
-				canvas.height = innerHeight
-				init()
-			})
-
-			// Objects
-			function Line(x, date) {
-				this.x = x
-				this.date = date
-			}
-
-			Line.prototype.draw = function() {
-				c.beginPath()
-				let yStart = 200;
-				const yEnd = 300;
-
-				const second = new Date(this.date).getSeconds();
-				const minutes = new Date(this.date).getMinutes();
-				const hours = new Date(this.date).getHours();
-
-				if(second == 0) {
-					yStart = 130;
+			onMounted(() => {
+				const canvas = document.querySelector('canvas')
+				const c = canvas.getContext('2d')
+				canvas.width = window.innerWidth
+				canvas.height = window.innerHeight
+				const center = canvas.width / 2;
+				const mouse = {
+					x: undefined,
+					y: undefined
 				}
+				const all_lines = 20;
+				const widthLine = Math.floor(canvas.width / all_lines);
 
-				if(minutes == 0) {
-					yStart = 200;
-				}
-				if(hours == 0) {
-					yStart = 260;
-				}
-
-				c.moveTo(this.x, yStart)
-				c.lineTo(this.x, yEnd)
-
-				if(this.x < center){
-					c.strokeStyle = 'gray'
-					c.lineWidth = 1
-				}
-				else {
-					c.strokeStyle = 'gray'
-					c.lineWidth = 4
-				}
-
-				c.stroke()
-				c.closePath()
-
-
-				if(this.x < center){
-					c.fillStyle = 'gray'
-				}
-				else {
-					c.fillStyle = "#000";
-				}
-
-				c.font = "8pt Arial";
-				const textWidth = c.measureText(second).width;
-
-				c.fillText(second , this.x - (textWidth / 2), 314);
-			}
-
-			Line.prototype.update = function() {
-				this.x -= 1;
-				this.draw()
-
-				if(this.x < -30) {
-					circles.shift();
-					const last_elem = circles[circles.length - 1];
-					circles.push(new Line(last_elem.x + 20, last_elem.date + 1000));
-				}
-
-
-
-			}
-
-			// Implementation
-			let circles = [];
-			function init() {
-				c.clearRect(0, 0, canvas.width, canvas.height);
-				circles = [];
-				const date = Date.now();
-
-				const all_lines = Math.floor(canvas.width / 20);
-				for (let i = 0; i < all_lines; i++) {
-
-					if(i === 0) {
-						circles.push(new Line(center, date))
-					}
-					else {
-						const next_x = center + i*100;
-						const prev_x = center - i*100;
-
-						const next_second = date + i*1000;
-						const prev_second = date - i*1000;
-						circles.push(new Line(next_x, next_second))
-						circles.push(new Line(prev_x, prev_second))
-					}
-
-
-				}
-
-				circles.sort((a,b) => {
-					return a.x - b.x;
+				addEventListener('mousemove', event => {
+					mouse.x = event.clientX
+					mouse.y = event.clientY
 				})
 
-			}
+				// Objects
+				class Line {
+					constructor(x, date) {
+						this.x = x
+						this.date = date
+					}
+					draw() {
+							c.beginPath()
+							let yStart = 220;
+							const yEnd = 300;
 
-			// Animation Loop
-			function animate() {
-				c.clearRect(0, 0, canvas.width, canvas.height) // Erase whole canvas
-				circles.forEach(circle => {
-					circle.update()
-				})
+							const second = new Date(this.date).getSeconds();
+							const minutes = new Date(this.date).getMinutes();
+							const hours = new Date(this.date).getHours();
 
-				c.beginPath()
-				c.moveTo(canvas.width / 2, 150)
-				c.lineTo(canvas.width / 2, 350)
-				c.strokeStyle = 'black'
-				c.lineWidth = 2
-				c.stroke()
-				c.closePath()
+							if(second === 0) {
+								yStart = 200;
+								if(minutes === 0) {
+									yStart = 180;
+									if(hours === 0) {
+										yStart = 160;
+									}
+								}
 
-				c.fillStyle = "#000";
-				c.font = "12pt Arial";
-				const date = new Date();
-				const hours = date.getHours();
-				const minutes = date.getUTCMinutes();
-				const seconds = date.getSeconds();
-				const textString = `${hours}:${minutes}:${seconds}`;
-				const textWidth = c.measureText(textString).width;
+							}
 
-				// c.fillText(textString , this.x - (textWidth / 2), 314);
-				c.fillText(textString, canvas.width / 2 - (textWidth / 2), 370);
-			}
+							c.moveTo(this.x, yStart)
+							c.lineTo(this.x, yEnd)
+
+							if(this.x <= center){
+								c.strokeStyle = 'gray'
+								c.lineWidth = 1
+							}
+							else {
+								c.strokeStyle = 'black'
+								c.lineWidth = 2
+							}
+
+							c.stroke()
+							c.closePath()
+
+
+							if(this.x < center){
+								c.fillStyle = 'gray'
+							}
+							else {
+								c.fillStyle = "#000";
+							}
+
+							c.font = "8pt Arial";
+							const textWidth = c.measureText(second).width;
+
+							c.fillText(second , this.x - (textWidth / 2), 314);
+
+							// tooltip for second
+							if(second === 22) {
+								c.beginPath()
+								c.strokeStyle = 'black'
+								c.lineWidth = 1
+								let start = { x: center,   y: 80  };
+								let cp1 =   { x: center,   y: 150  };
+								let cp2 =   { x: this.x,   y: 150  };
+								let end =   { x: this.x,   y: 210 };
+
+								c.beginPath();
+								c.moveTo(start.x, start.y);
+								c.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
+								c.stroke();
+								c.closePath();
+
+								const text = 'Вот эта секунда больше никогда не повторится ' +
+									' Она уникальная раз в жизни \n Её координаты ' + format(this.date, 'y MM dd HH:mm:ss');
+								c.font = '10pt Arial';
+								c.lineWidth = 1;
+								const opacity = () => {
+									// 0 to 1 throw 0.2
+									const diff = canvas.width - this.x;
+									if(diff < 100) {
+										return diff / 100;
+									}
+									return 1;
+									// if(this.x < canvas.width && this.x < canvas.width) return 1;
+									// canvas.width - this.x ? 1 : 0;
+									// this.x < 22 ? 1 : 0.5
+								}
+								c.fillStyle = `rgba(0,0,0,${ opacity() })`;
+								const textWidth = c.measureText(text).width;
+
+								c.fillText(text , center - (textWidth / 2), 70);
+
+								c.beginPath();
+								c.moveTo(end.x - 6, end.y - 6);
+								c.lineTo(end.x, end.y);
+								c.lineTo(end.x + 6, end.y - 6);
+								c.closePath();
+								c.stroke();
+								c.fill()
+							}
+						}
+					update() {
+						this.x -= 1;
+						this.draw()
+
+						if(this.x < -widthLine) {
+							lines.shift();
+							const last_elem = lines[lines.length - 1];
+							lines.push(new Line(last_elem.x + widthLine, last_elem.date + 1000));
+						}
+					}
+				}
+				class Clock {
+					draw() {
+						const halfCanvasWidth = canvas.width / 2;
+						c.beginPath()
+						c.fillStyle = '#000';
+						c.font = '12pt Arial';
+						const textString = format(new Date(), 'HH:mm:ss');
+						const textWidth = c.measureText(textString).width;
+						c.fillText(textString, center - (textWidth / 2), 370);
+
+						c.rect((halfCanvasWidth - textWidth/2) - 10, 160, textWidth + 20, 230)
+						c.strokeStyle = 'black'
+						c.lineWidth = 1
+						c.stroke()
+						c.closePath()
+					}
+				}
+
+				// Implementation
+				let lines = [];
+				let clock;
+				function init() {
+					c.clearRect(0, 0, canvas.width, canvas.height);
+					lines = [];
+					const date = Date.now();
+
+					for (let i = 0; i <= all_lines / 2; i++) {
+						if(i === 0) {
+							lines.push(new Line(center, date))
+						}
+						else {
+							const next_x = center + i * widthLine;
+							const prev_x = center - i * widthLine;
+
+							const next_second = date + i*1000;
+							const prev_second = date - i*1000;
+							lines.push(new Line(next_x, next_second))
+							lines.push(new Line(prev_x, prev_second))
+						}
+					}
+					lines.sort((a,b) => {
+						return a.x - b.x;
+					})
+					clock = new Clock();
+					animate();
+				}
+
+				// Animation Loop
+				function animate() {
+					c.clearRect(0, 0, canvas.width, canvas.height) // Erase whole canvas
+					c.fillStyle = '#f2f4f6';
+					c.fillRect(0, 0, canvas.width, canvas.height);
+					lines.forEach(line => {
+						line.update()
+					})
+
+					clock.draw();
+				}
 
 
 
-			const date_now = Date.now();
-			const start_date = Math.floor(date_now / 1000) * 1000 + 1000; // + sec
-			const diff = start_date - date_now;
+				const date_now = Date.now();
+				const start_date = Math.floor(date_now / 1000) * 1000 + 1000; // + sec
+				const diff = start_date - date_now;
 
-			setTimeout(() => {
-				init()
-				setInterval(animate, 10)
-			}, diff)
+				setTimeout(() => {
+					init()
+					setInterval(animate, 1000 / widthLine)
+				}, diff)
+			});
+
 
 		}
 	}

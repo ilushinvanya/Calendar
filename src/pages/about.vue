@@ -7,7 +7,7 @@ f7-page(name="about")
 		p Каждый квадратик – одна неделя. Участок времени от выходных – до следующих. Один ряд состоит из 52-х отрезков – ровно столько полных недель в году.
 		p https://irinaberg.com/zhizn-v-nedelyax-prostoj-kalendar-dlya-moshhnoj-motivacii/ @IrinaVBerg Возможно всё!
 	f7-block
-		f7-link(href="/form/") About Page
+		f7-link(href="/timer/") Timer Page
 		p https://interesno.co/myself/5ec6770b787b
 		iframe(width="560" height="315" src="https://www.youtube.com/embed/KGfFunFV2Ck" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen)
 		p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni molestiae laudantium dignissimos est nobis delectus nemo ea alias voluptatum architecto, amet similique, saepe iste consectetur in repellat ut minus quibusdam!
