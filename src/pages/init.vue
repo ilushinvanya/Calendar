@@ -36,7 +36,8 @@ export default {
 			// если не первый раз то тут смотрим на заполнение данных
 			props.f7router.navigate('/about/');
 		}
-		initBridge();
+    	// props.f7router.navigate('/about/');
+		// initBridge();
 	},
 }
 </script>

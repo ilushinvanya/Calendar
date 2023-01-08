@@ -9,7 +9,8 @@ import NotFoundPage from '../pages/404.vue';
 const routes = [
 	{
 		path: '/',
-		component: Init,
+		// component: Init,
+		redirect: '/about',
 	},
 	{
 		path: '/calendar',

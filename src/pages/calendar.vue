@@ -19,6 +19,7 @@ f7-page(name='calendar')
 						.dot(
 							v-for="dot in year"
 							:style="{ backgroundColor: dot.color, width: dotWidth, paddingTop: dotPaddingTop }"
+							:class="{ 'open': dot.clickable }"
 							:msg="dot.msg"
 						)
 </template>
@@ -32,6 +33,7 @@ f7-page(name='calendar')
 	import isWithinInterval from 'date-fns/isWithinInterval'
 	// import parse from 'date-fns/parse'
 	// import endOfWeek from 'date-fns/endOfWeek'
+	import endOfDay from 'date-fns/endOfDay'
 	import { useStore } from 'framework7-vue';
 	export default {
 		setup() {
@@ -90,7 +92,7 @@ f7-page(name='calendar')
 						msg,
 						color,
 					}
-					const endWeek = subDays(array[index + 1], 1);
+					const endWeek = endOfDay(subDays(array[index + 1], 1));
 
 					const isPregnancy = isWithinInterval(bDateMinusNineMonths, {
 						start: startWeek,
@@ -119,7 +121,7 @@ f7-page(name='calendar')
 					}
 					if (isBirthDay) {
 						color = '#bfd6bf';
-						localColor = '#73da73';
+						localColor = '#c0f6c0';
 						msg += '\nТы родился';
 						clickable = true;
 					}
@@ -203,6 +205,9 @@ f7-page(name='calendar')
 						pointer-events none
 					&:hover
 						box-shadow inset 0 0 5px 2px #fff
+						&:before
+							opacity 1
+					&.open
 						&:before
 							opacity 1
 
