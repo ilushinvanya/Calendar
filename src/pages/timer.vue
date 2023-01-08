@@ -38,7 +38,7 @@ f7-page(name='calendar')
 					x: undefined,
 					y: undefined
 				}
-				const all_lines = 40;
+				const all_lines = 100;
 				const widthBetweenLines = Math.floor(canvas.width / all_lines);
 
 				addEventListener('mousemove', event => {
@@ -142,6 +142,13 @@ f7-page(name='calendar')
 
 						c.fillText(second , this.x - (textWidth / 2), 314);
 
+
+						c.save();
+						c.translate(this.x, 260);
+						c.textAlign = "center";
+						c.rotate(270 * (Math.PI / 180));
+						c.fillText((this.date / 1000).toFixed(0), 0, 0);
+						c.restore();
 
 						if(second === 2) {
 							c.strokeStyle = `rgba(0,0,0,${ isFuture ? opacity(this.x) : 0 })`;
