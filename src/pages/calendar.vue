@@ -8,10 +8,12 @@ f7-page(name='calendar')
 				icon-md='material:menu'
 				panel-open='left'
 			)
-		f7-nav-title Календарь в неделях
+		f7-nav-title Жизнь {{dates.length - 2}}-летнего человека в {{isWeeks ? 'неделях' : 'месяцах'}}
 	// Page content
 	f7-block(strong no-hairlines)
-		.calendar-wrapper
+		.calendar-wrapper(
+			:style="isDesktop ? 'width: 60%; left: 20%' : ''"
+		)
 			div.years-wrapper
 				div.year-row(v-for="(year, index) in dates")
 					.age {{index - 1}}
@@ -22,6 +24,7 @@ f7-page(name='calendar')
 							:class="{ 'open': dot.clickable }"
 							:msg="dot.msg"
 						)
+
 </template>
 <script>
 	import format from 'date-fns/format'
@@ -31,12 +34,14 @@ f7-page(name='calendar')
 	import subDays from 'date-fns/subDays'
 	import addYears from 'date-fns/addYears'
 	import isWithinInterval from 'date-fns/isWithinInterval'
-	// import parse from 'date-fns/parse'
-	// import endOfWeek from 'date-fns/endOfWeek'
 	import endOfDay from 'date-fns/endOfDay'
 	import { useStore } from 'framework7-vue';
+	import { ref } from 'vue';
+	import { getDevice } from 'framework7';
+
 	export default {
 		setup() {
+			const device = getDevice();
 			const storeBirthday = useStore('birthday');
 			const storeGender = useStore('gender');
 			const storeAllYears = useStore('allYears');
@@ -150,13 +155,19 @@ f7-page(name='calendar')
 					}
 				})
 			});
+			const msg = ref('')
 
 			return {
+				isMobile: !device.desktop,
+				isDesktop: device.desktop,
 				dates: datesArray,
 				allYears,
 				firstYear,
 				dotWidth,
 				dotPaddingTop,
+				isMonths,
+				isWeeks,
+				msg,
 			}
 		}
 	}
@@ -165,7 +176,7 @@ f7-page(name='calendar')
 <style lang="stylus">
 .calendar-wrapper
 	display flex
-	width 100%
+	position relative
 	.age
 		width 20px
 		font-size 10px
@@ -184,7 +195,7 @@ f7-page(name='calendar')
 				.dot
 					box-shadow inset 0 0 0 1px #fff
 					position relative
-					border-radius 4px
+					border-radius 40px
 					span
 						text-align: center;
 						display: block;
@@ -193,22 +204,37 @@ f7-page(name='calendar')
 					&:before
 						content attr(msg)
 						position absolute
-						border 1px black solid
-						background white
+						border 1px white solid
+						background rgba(40, 40, 40, 0.9)
+						color white
 						z-index 9999
 						opacity 0
 						text-wrap nowrap
 						white-space pre
-						padding 2px 6px
-						bottom: 0
-						left: 100%
+						padding 6px 10px;
+						top 100%
+						left 50%
+						transform translateX(-50%)
 						pointer-events none
+						border-radius 10px
+					&:after
+						content ''
+						position absolute
+						opacity 0
+						border 4px transparent solid
+						border-bottom 4px rgba(40, 40, 40, 0.9) solid
+						color white
+						z-index 9999
+						pointer-events none
+						left 50%
+						transform translateX(-50%)
+						bottom -1px
 					&:hover
 						box-shadow inset 0 0 5px 2px #fff
-						&:before
+						&:before, &:after
 							opacity 1
 					&.open
-						&:before
+						&:before, &:after
 							opacity 1
 
 </style>

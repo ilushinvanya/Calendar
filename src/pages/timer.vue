@@ -16,16 +16,6 @@ f7-page(name='calendar')
 <script>
 	import { onMounted } from 'vue';
 	import format from 'date-fns/format';
-	// import format from 'date-fns/format'
-	// import eachWeekOfInterval from 'date-fns/eachWeekOfInterval'
-	// import eachMonthOfInterval from 'date-fns/eachMonthOfInterval'
-	// import subMonths from 'date-fns/subMonths'
-	// import subDays from 'date-fns/subDays'
-	// import addYears from 'date-fns/addYears'
-	// import isWithinInterval from 'date-fns/isWithinInterval'
-	// import parse from 'date-fns/parse'
-	// import endOfWeek from 'date-fns/endOfWeek'
-	// import { mount } from 'framework7-vue';
 	export default {
 		setup() {
 			onMounted(() => {
@@ -33,17 +23,21 @@ f7-page(name='calendar')
 				const c = canvas.getContext('2d')
 				canvas.width = window.innerWidth
 				canvas.height = 700;
-				const center = canvas.width / 2;
+				let center = canvas.width / 2;
 				const mouse = {
 					x: undefined,
 					y: undefined
 				}
-				const all_lines = 100;
+				const all_lines = 30;
 				const widthBetweenLines = Math.floor(canvas.width / all_lines);
 
 				addEventListener('mousemove', event => {
 					mouse.x = event.clientX
 					mouse.y = event.clientY
+				})
+				addEventListener('resize', event => {
+					canvas.width = window.innerWidth
+					center = canvas.width / 2;
 				})
 
 				const opacity = (currentX) => {
@@ -98,12 +92,15 @@ f7-page(name='calendar')
 						this.date = date
 					}
 					draw() {
-						let yStart = 220;
+
 
 						const second = new Date(this.date).getSeconds();
 						const minutes = new Date(this.date).getMinutes();
 						const hours = new Date(this.date).getHours();
 
+						// if(second !== 0){
+						// 	return;
+						// }
 						const pxDiff = widthBetweenLines / 1000;
 						const timeDiff = Date.now() - this.date;
 						this.x = center - (timeDiff * pxDiff);
@@ -121,6 +118,7 @@ f7-page(name='calendar')
 							c.lineWidth = 2;
 							c.fillStyle = '#000';
 						}
+						let yStart = 220;
 						if(second === 0) {
 							yStart = 200;
 							if(minutes === 0) {
@@ -138,17 +136,10 @@ f7-page(name='calendar')
 
 
 						c.font = '8pt Arial';
-						const textWidth = c.measureText(second).width;
+						const textWidth = c.measureText(`${second}`).width;
 
-						c.fillText(second , this.x - (textWidth / 2), 314);
+						c.fillText(`${second}` , this.x - (textWidth / 2), 314);
 
-
-						c.save();
-						c.translate(this.x, 260);
-						c.textAlign = "center";
-						c.rotate(270 * (Math.PI / 180));
-						c.fillText((this.date / 1000).toFixed(0), 0, 0);
-						c.restore();
 
 						if(second === 2) {
 							c.strokeStyle = `rgba(0,0,0,${ isFuture ? opacity(this.x) : 0 })`;
@@ -185,7 +176,7 @@ f7-page(name='calendar')
 							printAtCenter(text, 400, 20);
 
 							if(isFuture) {
-								const textTitle = 'Там будущее ➡️';
+								const textTitle = 'Там будущее 👉🏻';
 								const textSubTitle = 'На него можно повлиять\nЕсли делать дела';
 
 								c.fillStyle = `rgba(0,0,0,${ opacity(this.x) })`;
@@ -200,7 +191,7 @@ f7-page(name='calendar')
 							}
 
 							if(isPast) {
-								const textTitle = '⬅️ Там прошлое';
+								const textTitle = '👈🏻 Там прошлое';
 								const textSubTitle = 'Его не изменить, время прошло\nостались только история, опыт и воспоминания';
 								c.fillStyle = `rgba(0,0,0,${ opacity(this.x) })`;
 
@@ -280,7 +271,6 @@ f7-page(name='calendar')
 						return a.x - b.x;
 					})
 					clock = new Clock();
-					animate();
 				}
 
 				// Animation Loop

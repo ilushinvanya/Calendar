@@ -1,6 +1,7 @@
 // Import Vue
 import { createApp } from 'vue';
-
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
 // Import Framework7
 import Framework7 from 'framework7/lite-bundle';
 
@@ -23,6 +24,7 @@ Framework7.use(Framework7Vue);
 // Init App
 const app = createApp(App);
 
+app.use(FloatingVue)
 // Register Framework7 Vue components
 registerComponents(app);
 
