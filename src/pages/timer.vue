@@ -176,7 +176,7 @@ f7-page(name='calendar')
 							printAtCenter(text, 400, 20);
 
 							if(isFuture) {
-								const textTitle = 'Там будущее 👉🏻';
+								const textTitle = 'Здесь ещё будущее';
 								const textSubTitle = 'На него можно повлиять\nЕсли делать дела';
 
 								c.fillStyle = `rgba(0,0,0,${ opacity(this.x) })`;
@@ -191,7 +191,7 @@ f7-page(name='calendar')
 							}
 
 							if(isPast) {
-								const textTitle = '👈🏻 Там прошлое';
+								const textTitle = 'Тут уже прошлое';
 								const textSubTitle = 'Его не изменить, время прошло\nостались только история, опыт и воспоминания';
 								c.fillStyle = `rgba(0,0,0,${ opacity(this.x) })`;
 

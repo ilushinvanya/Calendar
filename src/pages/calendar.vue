@@ -11,8 +11,18 @@ f7-page(name='calendar')
 		f7-nav-title Жизнь {{dates.length - 2}}-летнего человека в {{isWeeks ? 'неделях' : 'месяцах'}}
 	// Page content
 	f7-block(strong no-hairlines)
+		f7-range(
+			class="margin-right"
+			style="height: 100vh; position: absolute"
+			vertical
+			min="0"
+			max="100"
+			step="1"
+			:value="containerWidth"
+			@range:change="changeWidth"
+		)
 		.calendar-wrapper(
-			:style="isDesktop ? 'width: 60%; left: 20%' : ''"
+			:style="`width: ${containerWidth}%; left: ${containerWidth > 60 ? (100 - containerWidth)/2 : 20}%`"
 		)
 			div.years-wrapper
 				div.year-row(v-for="(year, index) in dates")
@@ -54,7 +64,7 @@ f7-page(name='calendar')
 			const isMonths = storeMeasure.value === 'months';
 			const isWeeks = storeMeasure.value === 'weeks';
 			const dotWidth = isWeeks ? 'calc(100% / 52)' : isMonths ? 'calc(100% / 12)' : '';
-			const dotPaddingTop = isWeeks ? '2%' : isMonths ? '5%' : '';
+			const dotPaddingTop = isWeeks ? '2%' : isMonths ? '8%' : '';
 
 			const bDate = storeBirthday.value ?? new Date();
 			const nowDate = new Date();
@@ -84,7 +94,7 @@ f7-page(name='calendar')
 			}
 
 			let color = '#eaeaea'
-			const allUnits = isMonths ? 12 : isWeeks ? 53 : 0;
+			const allUnits = isMonths ? 12 : isWeeks ? 52 : 0;
 			const dateMsgFormat = isMonths ? 'MM.yyyy' : 'dd.MM.yyyy';
 			const datesArray = allDates.map(year => {
 				return year.filter((week, index) => index < allUnits).map((date, index, array) => {
@@ -147,6 +157,22 @@ f7-page(name='calendar')
 						clickable = true;
 					}
 
+					function updateFromJChan() {
+						const bdJChan = bDate;
+						const oldJChanEndedSchool = 15;
+						const howJChanEndedSchool = addYears(bdJChan, oldJChanEndedSchool);
+						const isJChanEndedSchool = isWithinInterval(howJChanEndedSchool, {
+							start: startWeek,
+							end: endWeek
+						});
+						if (isJChanEndedSchool) {
+							localColor = '#ff2d55';
+							msg += '\nДжеки Чан закончил школу';
+							clickable = true;
+						}
+					}
+					updateFromJChan();
+
 					return {
 						date,
 						msg,
@@ -155,8 +181,11 @@ f7-page(name='calendar')
 					}
 				})
 			});
-			const msg = ref('')
 
+			let containerWidth = ref(60);
+			function changeWidth(val) {
+				containerWidth.value = val;
+			}
 			return {
 				isMobile: !device.desktop,
 				isDesktop: device.desktop,
@@ -167,7 +196,8 @@ f7-page(name='calendar')
 				dotPaddingTop,
 				isMonths,
 				isWeeks,
-				msg,
+				containerWidth,
+				changeWidth,
 			}
 		}
 	}
@@ -195,7 +225,7 @@ f7-page(name='calendar')
 				.dot
 					box-shadow inset 0 0 0 1px #fff
 					position relative
-					border-radius 40px
+					border-radius 140px
 					span
 						text-align: center;
 						display: block;

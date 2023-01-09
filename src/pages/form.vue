@@ -46,15 +46,6 @@ f7-page(name='form')
 		)
 			option(value="months") Месяцы
 			option(value="weeks") Недели
-	//f7-block-title Выбор пола
-	//f7-list
-	//	f7-list-item(radio radio-icon="end" title="Мужской" name="gender" v-model:checked="gender2" value="2" input-value="2")
-	//	f7-list-item(radio radio-icon="end" title="Женский" name="gender" v-model:checked="gender1" value="1" input-value="1")
-	//	f7-list-item(radio radio-icon="end" title="Не знаю" name="gender" v-model:checked="gender0" value="0" input-value="0")
-	//f7-block-title В чем измерять один год
-	//f7-list
-	//	f7-list-item(radio radio-icon="end" title="Недели" text="Lor" name="measures"  value="weeks" input-value="weeks")
-	//	f7-list-item(radio radio-icon="end" title="Месяцы" text="Lor" name="measures"  value="months" input-value="months")
 	f7-row
 		f7-col
 		f7-col
@@ -81,19 +72,20 @@ f7-page(name='form')
 			const storeMeasure = useStore('measure');
 
 			let gender = ref(storeGender);
-			let birthday = storeBirthday.value;
+			let birthday = ref(storeBirthday);
 			const allYears = ref(storeAllYears);
 			const measure = ref(storeMeasure);
 
 			const saveData = () => {
-				store.dispatch('setBirthday', new Date(birthday));
+				store.dispatch('setBirthday', new Date(birthday.value));
 				store.dispatch('setGender', +gender.value);
 				store.dispatch('setMeasure', measure.value);
 				store.dispatch('setAllYears', +allYears.value);
 				props.f7router.navigate('/calendar/');
 			}
 			const onBirthdayChange = (value) => {
-				birthday = value;
+				debugger;
+				birthday.value = value[0];
 			}
 			return {
 				isMobile: !device.desktop,
