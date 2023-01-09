@@ -1,79 +1,34 @@
-# Calendar of life
+# Календарь твоей жизни
 
-## Framework7 CLI Options
+## Что это!
+Календарь собственной жизни в неделях 90 лет каждый по 52 недели
 
-Framework7 app created with following options:
+[Референс на русском](https://interesno.co/myself/5ec6770b787b)
 
-```
-{
-  "cwd": "/Users/ivanilushin/WebstormProjects/calendar",
-  "type": [
-    "web",
-    "pwa"
-  ],
-  "name": "Calendar of life",
-  "framework": "vue",
-  "template": "tabs",
-  "bundler": "vite",
-  "cssPreProcessor": "stylus",
-  "theming": {
-    "customColor": false,
-    "color": "#007aff",
-    "darkTheme": false,
-    "iconFonts": true,
-    "fillBars": false
-  },
-  "customBuild": false
-}
-```
+[Референс на английском](https://waitbutwhy.com/2014/05/life-weeks.html)
 
-## Install Dependencies
+[Топлес про календарь - YouTube](https://www.youtube.com/embed/KGfFunFV2Ck)
 
+[Открыть](www)
+## Разработка
 First of all we need to install dependencies, run in terminal
 ```
 npm install
 ```
 
-## NPM Scripts
-
+### NPM Scripts
 * 🔥 `start` - run development server
 * 🔧 `dev` - run development server
 * 🔧 `build` - build web app for production
 
-## Vite
-
-There is a [Vite](https://vitejs.dev) bundler setup. It compiles and bundles all "front-end" resources. You should work only with files located in `/src` folder. Vite config located in `vite.config.js`.
-
-## PWA
-
-This is a PWA. Don't forget to check what is inside of your `service-worker.js`. It is also recommended that you disable service worker (or enable "Update on reload") in browser dev tools during development.
-## Assets
-
-Assets (icons, splash screens) source images located in `assets-src` folder. To generate your own icons and splash screen images, you will need to replace all assets in this directory with your own images (pay attention to image size and format), and run the following command in the project directory:
-
-```
-framework7 assets
-```
-
-Or launch UI where you will be able to change icons and splash screens:
-
-```
-framework7 assets --ui
-```
-
-
-
-## Documentation & Resources
-
+### Documentation & Resources
 * [Framework7 Core Documentation](https://framework7.io/docs/)
 * [Framework7 Vue Documentation](https://framework7.io/vue/)
-
 
 * [Framework7 Icons Reference](https://framework7.io/icons/)
 * [Community Forum](https://forum.framework7.io)
 
-## Support Framework7
-
+### Support Framework7
 Love Framework7? Support project by donating or pledging on:
 - Patreon: https://patreon.com/framework7
 - OpenCollective: https://opencollective.com/framework7
