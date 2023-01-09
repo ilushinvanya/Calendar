@@ -19,7 +19,7 @@ f7-app(v-bind='f7params')
 		components: { Menu },
 		setup() {
 			const f7params = {
-				name: 'Calendar of life', // App name
+				name: 'Calendar of your life', // App name
 				theme: 'auto', // Automatic theme detection
 				// App store
 				store: store,
