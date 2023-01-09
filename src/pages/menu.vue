@@ -3,7 +3,7 @@ f7-page
 	f7-list
 		f7-list-item(
 			title="Описание"
-			link="/about/"
+			link="/"
 			view=".view-main"
 			panel-close="left"
 		)

@@ -10,16 +10,16 @@ const routes = [
 	{
 		path: '/',
 		// component: Init,
-		redirect: '/about',
+		redirect: '/form',
 	},
 	{
 		path: '/calendar',
 		component: Calendar,
 	},
-	{
-		path: '/about',
-		component: About,
-	},
+	// {
+	// 	path: '/about',
+	// 	component: About,
+	// },
 	{
 		path: '/form',
 		component: Form,
