@@ -4,6 +4,8 @@ f7-page
 		f7-list-item(
 			title="Описание"
 			link="https://ilushinvanya.github.io/calendar/"
+			external
+			target="_blank"
 			view=".view-main"
 			panel-close="left"
 		)
@@ -21,9 +23,11 @@ f7-page
 			panel-close="left"
 		)
 		f7-list-item(
-			title="Мгновении"
+			title="Секунды"
 			view=".view-main"
 			link="https://ilushinvanya.github.io/linear-clock/"
+			external
+			target="_blank"
 			panel-close="left"
 		)
 </template>
