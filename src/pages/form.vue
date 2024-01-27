@@ -84,7 +84,6 @@ f7-page(name='form')
 				props.f7router.navigate('/calendar/');
 			}
 			const onBirthdayChange = (value) => {
-				debugger;
 				birthday.value = value[0];
 			}
 			return {
