@@ -159,7 +159,7 @@ f7-page(name='calendar')
 
 					function updateFromJChan() {
 						const bdJChan = bDate;
-						const oldJChanEndedSchool = 15;
+						const oldJChanEndedSchool = 17;
 						const howJChanEndedSchool = addYears(bdJChan, oldJChanEndedSchool);
 						const isJChanEndedSchool = isWithinInterval(howJChanEndedSchool, {
 							start: startWeek,
