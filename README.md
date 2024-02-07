@@ -9,7 +9,9 @@
 
 [Топлес про календарь - YouTube](https://www.youtube.com/embed/KGfFunFV2Ck/)
 
-# 🕹️🍎 [Открыть календарь](https://ilushinvanya.github.io/calendar/www)
+# 🕹️🍎 [Открыть календарь](https://ilushinvanya.github.io/Calendar/www)
+
+
 ## Разработка
 First of all we need to install dependencies, run in terminal
 ```
