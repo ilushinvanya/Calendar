@@ -1,12 +1,9 @@
-
 import path from 'path';
 import vue from '@vitejs/plugin-vue';
 
-
-
 const SRC_DIR = path.resolve(__dirname, './src');
 const PUBLIC_DIR = path.resolve(__dirname, './public');
-const BUILD_DIR = path.resolve(__dirname, './www',);
+const BUILD_DIR = path.resolve(__dirname, './dist',);
 
 export default {
   plugins: [
@@ -31,7 +28,7 @@ export default {
   },
   server: {
     host: true,
-    https: true,
+    https: false,
   },
 
 };
