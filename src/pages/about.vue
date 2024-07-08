@@ -23,9 +23,10 @@ f7-page(name="about")
 				)
 			div
 		p
-		f7-link(href="https://interesno.co/myself/5ec6770b787b" target="_blank" external) Реф вдохновитель
+		f7-link(href="https://interesno.co/myself/5ec6770b787b" target="_blank" external) Референс вдохновение
 		p
-		f7-link(href="https://irinaberg.com/zhizn-v-nedelyax-prostoj-kalendar-dlya-moshhnoj-motivacii/" target="_blank" external) Реф вдохновитель
+		f7-link(href="https://irinaberg.com/zhizn-v-nedelyax-prostoj-kalendar-dlya-moshhnoj-motivacii/" target="_blank" external) Интересное описание
+		p
 		p Календарь жизни в неделях — это мощный инструмент для тех, кто стремится жить осознанно и максимально использовать каждую неделю своей жизни.
 		p Концепция календаря жизни в неделях основывается на идее, что визуализация времени может помочь людям лучше понять и ценить его. Вот несколько ключевых аспектов этой идеи:
 		ul
