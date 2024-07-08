@@ -9,51 +9,49 @@ f7-page(name='form')
 				panel-open='left'
 			)
 		f7-nav-title Настройки
-	f7-list(
-		:style="isDesktop ? 'width: 60%; left: 20%' : ''"
-		form
-		:inline-labels="isDesktop"
-		no-hairlines
-	)
-		f7-list-input(
-			:value="[birthday]"
-			label="День рождения"
-			type="datepicker"
-			outline
-			:calendar-params="{ maxDate: new Date(), dateFormat: 'dd.mm.yyyy' }"
-			@calendar:change="onBirthdayChange"
-		)
-		f7-list-input(
-			v-model:value="gender"
-			label="Выбор пола"
-			type="select"
-			outline
-		)
-			option(value="2") Мужской
-			option(value="1") Женский
-			option(value="0") Не знаю
+	.grid.medium-grid-cols-3
+		div
+		div
+			f7-list.no-margin-horizontal(
+				strong-ios dividers-ios inset-ios
+				form
+				:inline-labels="isDesktop"
+				no-hairlines
+			)
+				f7-list-input.no-margin-horizontal(
+					:value="[birthday]"
+					label="День рождения"
+					type="datepicker"
+					:calendar-params="{ maxDate: new Date(), dateFormat: 'dd.mm.yyyy' }"
+					@calendar:change="onBirthdayChange"
+				)
+				f7-list-input.no-margin-horizontal(
+					v-model:value="gender"
+					label="Выбор пола"
+					type="select"
+				)
+					option(value="2") Мужской
+					option(value="1") Женский
+					option(value="0") Не знаю
 
-		f7-list-input(
-			v-model:value="allYears"
-			label="Сколько показать всего лет"
-			outline
-		)
-		f7-list-input(
-			v-model:value="measure"
-			label="В чем измерять"
-			type="select"
-			outline
-		)
-			option(value="months") Месяцы
-			option(value="weeks") Недели
-	f7-row
-		f7-col
-		f7-col
+				f7-list-input(
+					v-model:value="allYears"
+					label="Сколько показать всего лет"
+				)
+				f7-list-input(
+					v-model:value="measure"
+					label="В чем измерять"
+					type="select"
+				)
+					option(value="months") Месяцы
+					option(value="weeks") Недели
+	.grid.grid-cols-3.grid-gap
+		div
+		.margin-horizontal-half
 			f7-button(
 				fill
 				@click='saveData'
 			) Сохранить
-		f7-col
 </template>
 <script>
 	import { ref } from 'vue';

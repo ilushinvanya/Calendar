@@ -10,19 +10,15 @@ f7-page(name='calendar')
 			)
 		f7-nav-title Жизнь {{dates.length - 2}}-летнего человека в {{isWeeks ? 'неделях' : 'месяцах'}}
 	// Page content
-	f7-block(strong no-hairlines)
-		f7-range(
-			class="margin-right"
-			style="height: 100vh; position: absolute"
-			vertical
-			min="0"
-			max="100"
-			step="1"
-			:value="containerWidth"
-			@range:change="changeWidth"
+	f7-block
+		f7-range.margin-bottom(
+			:min="10"
+			:max="100"
+			:step="1"
+			v-model:value="containerWidth"
 		)
 		.calendar-wrapper(
-			:style="`width: ${containerWidth}%; left: ${containerWidth > 60 ? (100 - containerWidth)/2 : 20}%`"
+			:style="`width: ${containerWidth}%; left: ${containerLeft}%`"
 		)
 			div.years-wrapper
 				div.year-row(v-for="(year, index) in dates")
@@ -37,17 +33,19 @@ f7-page(name='calendar')
 
 </template>
 <script>
-	import format from 'date-fns/format'
-	import eachWeekOfInterval from 'date-fns/eachWeekOfInterval'
-	import eachMonthOfInterval from 'date-fns/eachMonthOfInterval'
-	import subMonths from 'date-fns/subMonths'
-	import subDays from 'date-fns/subDays'
-	import addYears from 'date-fns/addYears'
-	import isWithinInterval from 'date-fns/isWithinInterval'
-	import endOfDay from 'date-fns/endOfDay'
+	import { ref, computed } from 'vue';
 	import { useStore } from 'framework7-vue';
-	import { ref } from 'vue';
 	import { getDevice } from 'framework7';
+	import {
+		addYears,
+		subDays,
+		subMonths,
+		format,
+		eachMonthOfInterval,
+		eachWeekOfInterval,
+		isWithinInterval,
+		endOfDay
+	} from 'date-fns'
 
 	export default {
 		setup() {
@@ -157,22 +155,6 @@ f7-page(name='calendar')
 						clickable = true;
 					}
 
-					function updateFromJChan() {
-						const bdJChan = bDate;
-						const oldJChanEndedSchool = 17;
-						const howJChanEndedSchool = addYears(bdJChan, oldJChanEndedSchool);
-						const isJChanEndedSchool = isWithinInterval(howJChanEndedSchool, {
-							start: startWeek,
-							end: endWeek
-						});
-						if (isJChanEndedSchool) {
-							localColor = '#ff2d55';
-							msg += '\nДжеки Чан закончил школу';
-							clickable = true;
-						}
-					}
-					updateFromJChan();
-
 					return {
 						date,
 						msg,
@@ -182,10 +164,10 @@ f7-page(name='calendar')
 				})
 			});
 
-			let containerWidth = ref(60);
-			function changeWidth(val) {
-				containerWidth.value = val;
-			}
+			const containerWidth = ref(100);
+			const containerLeft = computed(() => {
+				return (100 - containerWidth.value)/2
+			});
 			return {
 				isMobile: !device.desktop,
 				isDesktop: device.desktop,
@@ -197,19 +179,21 @@ f7-page(name='calendar')
 				isMonths,
 				isWeeks,
 				containerWidth,
-				changeWidth,
+				containerLeft,
 			}
 		}
 	}
 </script>
 
 <style lang="stylus">
+.range-slider
+	align-self: start;
 .calendar-wrapper
 	display flex
 	position relative
 	.age
-		width 20px
-		font-size 10px
+		width 2vw
+		font-size 1vw
 		text-align right
 		display flex
 		align-items center
@@ -220,12 +204,12 @@ f7-page(name='calendar')
 			.dots-wrapper
 				width 100%
 				display flex
+				align-items center
 				&:hover .dot
 					box-shadow inset 0 0 0 2px #dedddd
 				.dot
 					box-shadow inset 0 0 0 1px #fff
 					position relative
-					border-radius 140px
 					span
 						text-align: center;
 						display: block;
@@ -238,13 +222,13 @@ f7-page(name='calendar')
 						background rgba(40, 40, 40, 0.9)
 						color white
 						z-index 9999
-						opacity 0
+						display none
 						text-wrap nowrap
 						white-space pre
 						padding 6px 10px;
 						top 100%
 						left 50%
-						transform translateX(-50%)
+						transform translateX(-14%)
 						pointer-events none
 						border-radius 10px
 					&:after
@@ -263,9 +247,11 @@ f7-page(name='calendar')
 						box-shadow inset 0 0 5px 2px #fff
 						&:before, &:after
 							opacity 1
+							display block
 					&.open
 						&:before, &:after
 							opacity 1
+							display block
 
 </style>
 
