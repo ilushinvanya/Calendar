@@ -39,7 +39,7 @@ Thumbs.db
 
 
 # Production build
-#www/
+dist/
 /.idea/codeStyles/codeStyleConfig.xml
 /.idea/vcs.xml
 /.idea/codeStyles/Project.xml
