@@ -28,6 +28,15 @@ f7-page
 			target="_blank"
 			panel-close="left"
 		)
+	f7-list
+		f7-list-item(
+			title="Github"
+			view=".view-main"
+			link="https://github.com/ilushinvanya/calendar-of-your-life"
+			external
+			target="_blank"
+			panel-close="left"
+		)
 </template>
 <script>
 import { computed } from 'vue';
