@@ -10,5 +10,3 @@
 [Топлес про календарь - YouTube](https://www.youtube.com/embed/KGfFunFV2Ck/)
 
 # 🕹️🍎 [Открыть календарь](https://ilushinvanya.github.io/Calendar/www)
-
-!1
