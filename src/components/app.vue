@@ -21,11 +21,8 @@ f7-app(v-bind='f7params')
 			const f7params = {
 				name: 'Calendar of your life', // App name
 				theme: 'auto', // Automatic theme detection
-				// App store
 				store: store,
-				// App routes
 				routes: routes,
-				// Register service worker (only on production build)
 				serviceWorker: process.env.NODE_ENV ==='production' ? {
 					path: '/service-worker.js',
 				} : {},
