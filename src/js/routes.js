@@ -7,7 +7,7 @@ import NotFoundPage from '../pages/404.vue';
 const routes = [
 	{
 		path: '/',
-		redirect: '/form',
+		redirect: '/about',
 	},
 	{
 		path: '/about',
